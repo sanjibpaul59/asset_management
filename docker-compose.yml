@@ -9,9 +9,7 @@ services:
       - bash
       - -c
       - |
-       python manage.py makemigrations
-       python manage.py migrate
-       python manage.py runserver 0.0.0.0:3000
+        python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:3000
     volumes:
       - .:/asset_management
     ports:
@@ -20,6 +18,8 @@ services:
       - .env
     depends_on:
       - 'db'
+    networks:
+      - asset_management_network
     
   db:
     image: mysql
@@ -34,6 +34,12 @@ services:
     ports:
       - "3310:3306"
     volumes:
-      - ./db:/var/lib/mysql
-      - ./db:/docker-entrypoint-initdb.d/:ro
+      - db_data:/var/lib/mysql
+      # Add initialization scripts if needed, mounted to /docker-entrypoint-initdb.d
+    networks:
+      - asset_management_network
+volumes:
+  db_data:
+networks:
+  asset_management_network:
 
