@@ -1,5 +1,5 @@
 DEBUG=True
-SECRET_KEY=django-insecure-bl!bu)$%m67x*rfntjdgkoiciyd@^egbr^*+kz)-#jex+x05mj
+SECRET_KEY='Django SECRET_KEY'
 
 DATABASE_NAME=DB_NAME
 DATABASE_USER=DB_USERNAME
