@@ -90,9 +90,9 @@ DATABASES = {
         "USER": env("DATABASE_USER"),
         "PASSWORD": env("DATABASE_PASSWORD"),
         # Change to 'db' if you are using docker-compose
-        # "HOST": "db",
+        "HOST": "db",
         # Change to localhost if you are using local mysql server
-        "HOST":"localhost",
+        # "HOST":"localhost",
         "PORT":"3306",
         "OPTIONS": {
             "charset": "utf8mb4",  # to avoid unicode warning for database
@@ -133,7 +133,7 @@ AUTH_USER_MODEL='assets.CustomUser'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Dhaka'
 
 USE_I18N = True
 
