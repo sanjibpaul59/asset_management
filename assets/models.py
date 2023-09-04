@@ -50,6 +50,8 @@ class CustomUser(AbstractUser):
             ("can_delete_asset_condition", "Can delete asset condition"),
             ("can_return_asset", "Can return asset"),
         ]
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
 
 class Company(BaseModel):
     name = models.CharField(max_length=50)
@@ -58,6 +60,24 @@ class Company(BaseModel):
     email = models.EmailField(max_length=50)
     description = models.TextField()
     employees = models.ManyToManyField(CustomUser, related_name='employees')
+    
+    class Meta:
+        verbose_name = 'Company'
+        verbose_name_plural = 'Companies'
+
+class Employee(BaseModel):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='company_employee')
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='company_employees')
+    designation = models.CharField(max_length=50)
+    department = models.CharField(max_length=50)
+    contact_number = models.CharField(max_length=50)
+    address = models.CharField(max_length=50)
+    description = models.TextField()
+    joining_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Employee'
+        verbose_name_plural = 'Employees'
 
 class Device(BaseModel):
     device_type = models.CharField(max_length=50)
@@ -66,12 +86,16 @@ class Device(BaseModel):
     serial_number = models.CharField(max_length=50)
     description = models.CharField(max_length=50)
     current_condition = models.CharField(max_length=50)
-    owner_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='devices_owned')
-    company_id = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='devices_owned')
+    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='devices_owned')
+
+    class Meta:
+        verbose_name = 'Device'
+        verbose_name_plural = 'Devices'
+        ordering = ['-created_at']
 
 class ConditionLog(BaseModel):
-    device_id = models.ForeignKey(Device, on_delete=models.CASCADE, related_name='condition_logs')
-    employee_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='condition_logs_allocated')
+    device = models.ForeignKey(Device, on_delete=models.CASCADE, related_name='condition_logs')
+    employee = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='condition_logs_allocated')
     allocation_date = models.DateTimeField(auto_now_add=True)
     return_date = models.DateTimeField(auto_now_add=True)
     condition_on_allocation = models.TextField()
@@ -79,3 +103,4 @@ class ConditionLog(BaseModel):
 
     class Meta:
         ordering = ['-allocation_date']
+        verbose_name = 'Condition Log'
