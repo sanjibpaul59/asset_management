@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 import environ
-import requests
 
 env = environ.Env(
     # set casting, default value
@@ -47,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'assets',
 ]
 
 MIDDLEWARE = [
@@ -89,8 +89,11 @@ DATABASES = {
         "NAME": env("DATABASE_NAME"),
         "USER": env("DATABASE_USER"),
         "PASSWORD": env("DATABASE_PASSWORD"),
-        "HOST": env("DATABASE_HOST"),
-        'PORT': env('DATABASE_PORT'),
+        # Change to 'db' if you are using docker-compose
+        "HOST": "db",
+        # Change to localhost if you are using local mysql server
+        # "HOST":"localhost",
+        "PORT":"3306",
         "OPTIONS": {
             "charset": "utf8mb4",  # to avoid unicode warning for database
         },
@@ -123,13 +126,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL='assets.CustomUser'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Dhaka'
 
 USE_I18N = True
 
